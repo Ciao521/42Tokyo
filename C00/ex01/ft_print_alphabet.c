@@ -14,5 +14,11 @@
 
 void	ft_print_alphabet(void)
 {
-	write(1, "abcdefghijklmnopqrstuvwxyz", 26);
+	write(1, "abcdefghijklmnopqrstuvwxyz", 26);//fd:0(標準入力),1(標準出力),2(標準エラー出力)
 }
+/*
+int main(void){
+	ft_print_alphabet();
+	return 0;
+}
+*/
