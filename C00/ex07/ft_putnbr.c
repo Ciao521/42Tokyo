@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <unistd.h>
-
+#include <stdio.h>
 void	ft_putnbr2(int nb, char *t, int nbdigits, int isneg);
 
 void	ft_putchar(char c)
@@ -41,12 +41,12 @@ void	ft_putnbr(int nb)
 		write(1, "-2147483648", 11);
 		return ;
 	}
-	if (nb == 0)
+	else if (nb == 0)
 	{
 		write(1, "0", 1);
 		return ;
 	}
-	if (nb < 0)
+	else if (nb < 0)
 	{
 		isneg = 1;
 		nb = -nb;
@@ -64,4 +64,10 @@ void	ft_putnbr2(int nb, char *t, int nbdigits, int isneg)
 		nb /= 10;
 	}
 	display(t, nbdigits - 1, isneg);
+}
+
+int main (void){
+
+	ft_putnbr(-11);
+	return 0;
 }
