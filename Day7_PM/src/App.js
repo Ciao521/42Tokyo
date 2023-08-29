@@ -47,7 +47,7 @@ function App() {
             let _rewardAmount = Number(rewardAmount);
             const data = contract.methods.setRentalData(renter, _tokenId, _expire, _rewardAmount).encodeABI();
             let gas = await contract.methods.setRentalData(renter, _tokenId, _expire, _rewardAmount).estimateGas();
-            const gasPrice = web3.eth.getGasPrice();
+            const gasPrice = await web3.eth.getGasPrice();
             gas = Number(gas);
             const tx = await web3.eth.accounts.signTransaction({
                 nonce: "0x" + nonce.toString(16),
