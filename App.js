@@ -37,8 +37,8 @@ function App() {
                 privateKey
             );
             const receipt = await web3.eth.sendSignedTransaction(tx.rawTransaction);
-            
-           
+            const tokenId = await contract.method.totalSupply().call();
+            setOutput ('Transaction: ${receipt.transactionHash}. tokenId: ${tokenId}');
         };
 
 
