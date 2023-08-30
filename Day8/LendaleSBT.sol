@@ -65,20 +65,34 @@ contract LendableSBT is ERC5192,Ownable {
         tokenRentalData[tokenId].users[renter].rewardAmount = rewardAmount;
     }
    
-    // トークンの有効期限が過ぎているかどうかをチェックする条件を修正します。
+    // function rent(uint256 tokenId) public{
+    //   require(
+    //         tokenRentalData[tokenId].users[msg.sender].expire >= block.timestamp,
+    //         "Token is not available for rent"
+    //     );
+    //     require(
+    //         tokenRentalData[tokenId].users[msg.sender].isRented == false,
+    //         "Token is already rented"
+    //     );
+    //     //payable(ownerOf(tokenId)).transfer(tokenRentalData[tokenId].users[msg.sender].rewardAmount);
+    //     // トークンのレンタル状態を更新
+    //     tokenRentalData[tokenId].users[msg.sender].isRented = true;
+        
+    // }
     function rent(uint256 tokenId) public{
         require(
-            tokenRentalData[tokenId].users[msg.sender].expire >= block.timestamp,
+            tokenRentalData[tokenId].users[tx.origin].expire >= block.timestamp,
             "Token has expired"  // エラーメッセージを修正
         );
         require(
-            tokenRentalData[tokenId].users[msg.sender].isRented == false,
+            tokenRentalData[tokenId].users[tx.origin].isRented == false,
             "Token is already rented"
         );
+        payable(ownerOf(tokenId)).call{value:tokenRentalData[tokenId].users[tx.origin].rewardAmount};
         // トークンのレンタル状態を更新
-        tokenRentalData[tokenId].users[msg.sender].isRented = true;
+        tokenRentalData[tokenId].users[tx.origin].isRented = true;
     }
-    
+
     function getRentalData(
         address renter,
         uint256 tokenId
@@ -87,7 +101,7 @@ contract LendableSBT is ERC5192,Ownable {
     }
     // トークンの有効期限切れをチェック
    function isTokenExpiredCheck(address renter ,uint256 tokenId ) public view returns (bool) {
-       return tokenRentalData[tokenId].users[renter].expire>=block.timestamp;
+       return (tokenRentalData[tokenId].users[renter].expire>=block.timestamp);
    }
      // トークンのレンタル状態をチェック
     function isRentedCheck(address renter,uint256 tokenId) public view returns (bool) {
